@@ -2,39 +2,36 @@ name: Build MCPDisp
 
 on:
   push:
-    branches: [ master ]
   workflow_dispatch:
 
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install MSYS2
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          install: >-
-            base-devel
-            git
-            meson
-            ninja
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-jack2
+    - name: Setup MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          git
+          meson
+          ninja
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-jack2
+        msystem: MINGW64
 
-      - name: Build project
-        shell: msys2 {0}
-        run: |
-          cd "${{ github.workspace }}"
-          cd mcpdisp-src
-          meson setup build --buildtype=release
-          ninja -C build
+    - name: Build with Meson + Ninja
+      shell: msys2 {0}
+      run: |
+        cd "${{ github.workspace }}"
+        meson setup build --buildtype=release
+        ninja -C build
 
-      - name: Upload binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: mcpdisp-exe
-          path: mcpdisp-src/build/mcpdisp.exe
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mcpdisp
+        path: build/mcpdisp.exe
