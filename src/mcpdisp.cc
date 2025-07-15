@@ -653,10 +653,12 @@ int main(int argc, char** argv)
 		one of these makes window close work */
 	signal(SIGTERM, on_term);
 	signal(SIGINT, on_term);
+#ifndef _WIN32
 	signal(SIGPIPE, on_term);
 	signal(SIGHUP, on_term);
 	signal(SIGQUIT, on_term);
 	signal(SIGKILL, on_term);
+#endif
 	signal(SIGABRT, on_term);
 
 
