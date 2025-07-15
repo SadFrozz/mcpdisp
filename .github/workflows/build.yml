@@ -25,6 +25,7 @@ jobs:
           mingw-w64-x86_64-ninja
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-jack2
+          mingw-w64-x86_64-fltk
 
     - name: Build with Meson + Ninja
       shell: msys2 {0}
