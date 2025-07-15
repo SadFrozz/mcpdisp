@@ -33,9 +33,17 @@ jobs:
         cd "${{ github.workspace }}"
         meson setup build --buildtype=release
         ninja -C build
+        
+    - name: Copy runtime DLLs
+      shell: msys2 {0}
+      run: |
+        cp /mingw64/bin/libfltk*.dll build/ || true
+        cp /mingw64/bin/libjack*.dll build/ || true
+        cp /mingw64/bin/libstdc++-6.dll build/
+        cp /mingw64/bin/libgcc_s_seh-1.dll build/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: mcpdisp
-        path: build/mcpdisp.exe
+        name: mcpdisp-win64
+        path: build/
