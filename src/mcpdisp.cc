@@ -456,7 +456,7 @@ static int usage() {
 // Jack RT process function
 int process(jack_nframes_t nframes, void *arg)
 {
-	uint i;
+	unsigned int i;
 	char sendstring[127];
 	void* port_buf = jack_port_get_buffer(input_port, nframes);
 	void* thru_buf = jack_port_get_buffer(thru_port, nframes);
